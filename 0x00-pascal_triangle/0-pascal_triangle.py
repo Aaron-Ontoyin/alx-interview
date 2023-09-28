@@ -21,5 +21,5 @@ def pascal_triangle(n):
             cur_row.append(x + pre_row[idx - 1])
         cur_row.append(1)
         triangle.append(cur_row)
-    
+
     return triangle
