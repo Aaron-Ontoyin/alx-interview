@@ -9,7 +9,7 @@ This module contains functions that determines if all the boxes can be opened
 
 def canUnlockAll(boxes):
     if not boxes:
-        return False
+        return True
 
     opened = set()
     queue = [0]
