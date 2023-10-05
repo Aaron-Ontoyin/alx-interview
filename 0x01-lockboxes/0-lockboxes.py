@@ -16,7 +16,7 @@ def canUnlockAll(boxes):
 
     while queue:
         current_box = queue.pop(0)
-        
+
         if current_box not in opened:
             opened.add(current_box)
 
