@@ -30,4 +30,4 @@ def canUnlockAll(boxes):
     available_keys = boxes[0]
     locked_boxes = list(enumerate(boxes))[1:]
 
-    return unlock(available_keys, locked_boxesi)
+    return unlock(available_keys, locked_boxes)
