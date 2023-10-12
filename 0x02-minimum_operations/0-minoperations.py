@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 This module contains a function that finds min operations to
 get n H's in a file. Check readme for more details
