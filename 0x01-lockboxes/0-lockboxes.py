@@ -16,17 +16,26 @@ def canUnlockAll(boxes):
 
     while queue:
         current_box = queue.pop(0)
-        
         if current_box not in opened:
             opened.add(current_box)
-
             for key in boxes[current_box]:
-                if key not in opened and key < len(boxes):
+                if key not in opened and key not in queue and key < len(boxes):
                     queue.append(key)
 
     return len(opened) == len(boxes)
 
-
+#    while queue:
+#        current_box = queue.pop(0)
+#
+#        if current_box not in opened:
+#            opened.add(current_box)
+#
+#            for key in boxes[current_box]:
+#                if key not in opened and key < len(boxes):
+#                    queue.append(key)
+#
+#    return len(opened) == len(boxes)
+#
 # def unlock(available_keys, locked_boxes):
 # 	"""Unlock boxes"""
 # 	if len(locked_boxes) == 0:
