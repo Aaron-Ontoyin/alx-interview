@@ -15,7 +15,8 @@ def print_lines():
     """Prints available lines and filesize to stdout"""
     print(f"File size: {total_file_size}")
     for code in sorted(status_codes.keys()):
-        print(f"{code}: {status_codes[code]}")
+        if status_codes[code] > 0:
+            print(f"{code}: {status_codes[code]}")
 
 
 signal.signal(signal.SIGINT, signal_handler)
