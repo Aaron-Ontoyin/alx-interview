@@ -13,9 +13,9 @@ def signal_handler(sig, frame):
 
 def print_lines():
     """Prints available lines and filesize to stdout"""
-    print("File size:", total_file_size)
+    print(f"File size: {total_file_size}")
     for code in sorted(status_codes.keys()):
-        print(f"{code}:", status_codes[code])
+        print(f"{code}: {status_codes[code]}")
 
 
 signal.signal(signal.SIGINT, signal_handler)
