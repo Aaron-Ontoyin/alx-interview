@@ -20,7 +20,10 @@ def print_lines():
 
 signal.signal(signal.SIGINT, signal_handler)
 
-pattern = re.compile(r'(\d+\.\d+\.\d+\.\d+) - \[([^\]]+)\] "GET /projects/(\d+) HTTP/1\.1" (\d+) (\d+)')
+pattern = re.compile(
+    r'(\d+\.\d+\.\d+\.\d+) - \[([^\]]+)\] '
+    r'"GET /projects/(\d+) HTTP/1\.1" (\d+) (\d+)'
+)
 
 total_file_size = 0
 status_codes = {
@@ -34,7 +37,7 @@ status_codes = {
     500: 0
 }
 
-line_count  = 0
+line_count = 0
 for line in sys.stdin:
     match = pattern.match(line)
     if match:
