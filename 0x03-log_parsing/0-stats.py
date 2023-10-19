@@ -2,13 +2,13 @@
 """Log parsing. Alx Interview questions"""
 import re
 import sys
-import signal
+# import signal
 
 
-def signal_handler(sig, frame):
-    """Handles keyboard Interupt"""
-    print_lines()
-    sys.exit(0)
+# def signal_handler(sig, frame):
+#     """Handles keyboard Interupt"""
+#     print_lines()
+#     sys.exit(0)
 
 
 def print_lines():
@@ -19,7 +19,7 @@ def print_lines():
             print(f"{code}: {status_codes[code]}")
 
 
-signal.signal(signal.SIGINT, signal_handler)
+# signal.signal(signal.SIGINT, signal_handler)
 
 pattern = re.compile(
     r'(\d+\.\d+\.\d+\.\d+) - \[([^\]]+)\] '
@@ -39,19 +39,20 @@ status_codes = {
 }
 
 line_count = 0
-for line in sys.stdin:
-    line = line.strip()
-    match = pattern.fullmatch(line)
-    if match:
-        size = int(match.group(5))
-        status = int(match.group(4))
+try:
+    for line in sys.stdin:
+        line = line.strip()
+        match = pattern.fullmatch(line)
+        if match:
+            size = int(match.group(5))
+            status = int(match.group(4))
 
-        total_file_size += size
-        if status in status_codes:
-            status_codes[status] += 1
+            total_file_size += size
+            if status in status_codes:
+                status_codes[status] += 1
 
-    line_count += 1
-    if line_count % 10 == 0:
-        print_lines()
-
-print_lines()
+        line_count += 1
+        if line_count % 10 == 0:
+            print_lines()
+finally:
+    print_lines()
