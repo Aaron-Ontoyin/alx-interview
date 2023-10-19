@@ -39,7 +39,8 @@ status_codes = {
 
 line_count = 0
 for line in sys.stdin:
-    match = pattern.match(line)
+    line = line.strip()
+    match = pattern.fullmatch(line)
     if match:
         size = int(match.group(5))
         status = int(match.group(4))
