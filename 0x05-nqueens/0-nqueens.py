@@ -120,6 +120,6 @@ class ChessBoard:
 
 cb = ChessBoard(n)
 cb.solve()
-cb.display()
-cb.print_path()
+# cb.display()
+# cb.print_path()
 cb.print_solutions()
