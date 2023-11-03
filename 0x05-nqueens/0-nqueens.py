@@ -45,6 +45,8 @@ class ChessBoard:
         self._board = [['_'] * n for _ in range(n)]
         self.POSITIONS = [(i, j) for i in range(n) for j in range(n)]
         self.PATH = []
+        self.n = n
+        self.solutions = []
 
     def display(self):
         """Display ChessBoard"""
@@ -85,16 +87,15 @@ class ChessBoard:
         Solve NQueens problem
         """
         if len(self.PATH) == n:
-            return True
+            self.solutions.append(self.PATH.copy())
+            return
         for pos in self.POSITIONS:
             if self.is_safe(pos):
                 self.insert(pos)
                 self.PATH.append(pos)
-                if self._solve():
-                    return True
+                self._solve()
                 self.remove(pos)
                 self.PATH.remove(pos)
-        return False
 
     def solve(self):
         """Solve NQueens problem and return the PATH"""
@@ -107,13 +108,18 @@ class ChessBoard:
             print(pos, end=' -> ')
         print('End')
 
-    def list_path(self):
-        """Return PATH"""
-        print([list(s) for s in self.PATH])
+    def print_solutions(self):
+        """Print all solutions"""
+        seen = []
+        for solution in self.solutions:
+            first_pos = solution[0][0]
+            if first_pos == 0 and solution[0] not in seen:
+                print(solution)
+                seen.append(solution[0])
 
 
 cb = ChessBoard(n)
 cb.solve()
-# cb.display()
-# cb.print_path()
-cb.list_path()
+cb.display()
+cb.print_path()
+cb.print_solutions()
