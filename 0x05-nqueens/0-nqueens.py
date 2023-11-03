@@ -43,7 +43,7 @@ class ChessBoard:
         n: size of board
         """
         self._board = [['_'] * n for _ in range(n)]
-        self.POSITIONS = [(i, j) for i in range(n) for j in range(n)]
+        self.POSITIONS = [[i, j] for i in range(n) for j in range(n)]
         self.PATH = []
         self.n = n
         self.solutions = []
