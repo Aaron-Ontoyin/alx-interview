@@ -69,57 +69,59 @@ class ChessBoard:
         row, col = pos
         self._board[row][col] = '_'
 
-    def is_safe(self, pos):
+    def is_safe(self, row, col):
         """
-        Check if queen can be placed at pos
-        pos: tuple of (row, col)
+        Check if queen can be placed at (row, col)
         """
-        row, col = pos
-        for r, c in self.PATH:
-            if r == row or c == col:
+        for i in range(row):
+            if self._board[i][col] == 'Q':
                 return False
-            if abs(r - row) == abs(c - col):
+
+        for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+            if self._board[i][j] == 'Q':
                 return False
+
+        for i, j in zip(range(row, -1, -1), range(col, self.n)):
+            if self._board[i][j] == 'Q':
+                return False
+
         return True
 
-    def _solve(self):
+    def _solve(self, row):
         """
         Solve NQueens problem
         """
-        if len(self.PATH) == n:
+        if row == self.n:
             self.solutions.append(self.PATH.copy())
             return
-        for pos in self.POSITIONS:
-            if self.is_safe(pos):
-                self.insert(pos)
-                self.PATH.append(pos)
-                self._solve()
-                self.remove(pos)
-                self.PATH.remove(pos)
+        for col in range(self.n):
+            if self.is_safe(row, col):
+                self.insert([row, col])
+                self.PATH.append([row, col])
+                self._solve(row + 1)
+                self.remove([row, col])
+                self.PATH.pop()
 
     def solve(self):
         """Solve NQueens problem and return the PATH"""
-        self._solve()
-        return self.PATH
+        self._solve(0)
+        return self.solutions
 
-    def print_path(self):
+    def print_paths(self):
         """Print PATH with direction"""
-        for pos in self.PATH:
-            print(pos, end=' -> ')
-        print('End')
+        for path in self.solutions:
+            for pos in path:
+                print(pos, end=' -> ')
+            print('End')
 
     def print_solutions(self):
         """Print all solutions"""
-        seen = []
         for solution in self.solutions:
-            first_pos = solution[0][0]
-            if first_pos == 0 and solution[0] not in seen:
-                print(solution)
-                seen.append(solution[0])
+            print(solution)
 
 
 cb = ChessBoard(n)
 cb.solve()
 # cb.display()
-# cb.print_path()
+# cb.print_paths()
 cb.print_solutions()
