@@ -30,14 +30,22 @@ request(apiUrl, (error, response, body) => {
 
   const charactersUrls = filmData.characters;
 
-  // Fetch character names in parallel
-  charactersUrls.forEach((characterUrl) => {
+  // Fetch character names in order
+  let count = 0;
+  charactersUrls.forEach((characterUrl, index) => {
     request(characterUrl, (charError, charResponse, charBody) => {
       if (!charError && charResponse.statusCode === 200) {
         const characterData = JSON.parse(charBody);
         console.log(characterData.name);
+        count++;
+
+        // Check if all characters have been printed
+        if (count === charactersUrls.length) {
+          process.exit(0);
+        }
       } else {
         console.error('Error fetching character:', charError || `Status Code: ${charResponse.statusCode}`);
+        process.exit(1);
       }
     });
   });
