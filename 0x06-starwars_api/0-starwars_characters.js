@@ -1,52 +1,36 @@
 #!/usr/bin/node
+
 const request = require('request');
 
-const movieId = process.argv[2];
+async function fetchAndPrintCharacters(filmId) {
+  try {
+    const filmUrl = `https://swapi-api.hbtn.io/api/films/${filmId}`;
+    const filmResponse = await promisifiedRequest(filmUrl);
 
-if (!movieId) {
-  console.error('Please provide a Movie ID as the first argument.');
-  process.exit(1);
+    for (const characterId of filmResponse.characters) {
+      const characterResponse = await promisifiedRequest(characterId);
+      console.log(JSON.parse(characterResponse).name);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-const apiUrl = `https://swapi.dev/api/films/${movieId}/`;
-
-request(apiUrl, (error, response, body) => {
-  if (error) {
-    console.error('Error:', error);
-    process.exit(1);
-  }
-
-  if (response.statusCode !== 200) {
-    console.error('Unexpected status code:', response.statusCode);
-    process.exit(1);
-  }
-
-  const filmData = JSON.parse(body);
-
-  if (!filmData.characters || filmData.characters.length === 0) {
-    console.error('No characters found for this movie.');
-    process.exit(1);
-  }
-
-  const charactersUrls = filmData.characters;
-
-  // Fetch character names in order
-  let count = 0;
-  charactersUrls.forEach((characterUrl, index) => {
-    request(characterUrl, (charError, charResponse, charBody) => {
-      if (!charError && charResponse.statusCode === 200) {
-        const characterData = JSON.parse(charBody);
-        console.log(characterData.name);
-        count++;
-
-        // Check if all characters have been printed
-        if (count === charactersUrls.length) {
-          process.exit(0);
-        }
+function promisifiedRequest(url) {
+  return new Promise((resolve, reject) => {
+    request(url, (error, response, body) => {
+      if (error) {
+        reject(error);
       } else {
-        console.error('Error fetching character:', charError || `Status Code: ${charResponse.statusCode}`);
-        process.exit(1);
+        resolve(body);
       }
     });
   });
-});
+}
+
+const filmId = process.argv[2];
+if (!filmId) {
+  console.error('Please provide a Film ID as the first argument.');
+} else {
+  fetchAndPrintCharacters(filmId);
+}
