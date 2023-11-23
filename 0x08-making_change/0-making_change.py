@@ -27,18 +27,18 @@ def makeChange(coins, total):
     while True:
         try:
             max_val = coins[-1]
-            if total % max_val == 0:
+            total_mode_max = total % max_val
+            if total_mode_max == 0:
                 count += (total // max_val)
                 return count
 
-            total_mode_max = total % max_val
             for coin in coins:
                 if total_mode_max % coin == 0:
                     total_floor_max_val = total // max_val
                     count += total_floor_max_val
                     total = total_mode_max
                     if coin == coins[-2]:
-                        count += total // count
+                        count += total // coin
                         return count
                     else:
                         break
