@@ -48,15 +48,13 @@ def isWinner(x, nums):
     Ben wins because there are no prime numbers for Maria to choose
     Result: Ben has the most wins
     """
-    if x < 1 or not nums or len(nums) < x:
+    if (x < 1) or (not nums) or (len(nums) < x):
         return None
 
     scores = {"Maria": 0, "Ben": 0}
     for game_round in range(x):
         num_list = list(range(1, nums[game_round] + 1))
-        primes = sorted(
-            [num for num in num_list if check_prime(num)], reverse=True
-        )
+        primes = sorted(list(filter(check_prime, num_list)), reverse=True)
         turn = 0
         while num_list:
             if primes:
