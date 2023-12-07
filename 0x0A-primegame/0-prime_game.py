@@ -54,14 +54,16 @@ def isWinner(x, nums):
     scores = {"Maria": 0, "Ben": 0}
     for game_round in range(x):
         num_list = list(range(1, nums[game_round] + 1))
+        primes = sorted(
+            [num for num in num_list if check_prime(num)], reverse=True
+        )
         turn = 0
         while num_list:
-            num_list = sorted(
-                [num for num in num_list if check_prime(num)], reverse=True
-            )
-            if num_list:
-                num_list = remove_multiples(num_list[0], num_list)
+            if primes:
+                num_list = remove_multiples(primes.pop(0), num_list)
                 turn += 1
+            else:
+                break
         scores["Maria" if turn % 2 != 0 else "Ben"] += 1
     if scores["Maria"] > scores["Ben"]:
         return "Maria"
