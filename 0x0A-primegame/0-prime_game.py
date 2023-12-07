@@ -12,16 +12,14 @@ determine who the winner of each game is.
 """
 
 
-def is_prime(n):
-    """
-    Checks if a number is prime
-    """
-    if n < 2:
-        return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
+def check_prime(n):
+    """Check if number is prime"""
+    return all([(n % j) for j in range(2, int(n**0.5) + 1)]) and n > 1
+
+
+def remove_multiples(n, num_list):
+    """Remove multiples of n from num_list"""
+    return [num for num in num_list if num % n != 0]
 
 
 def isWinner(x, nums):
@@ -51,18 +49,20 @@ def isWinner(x, nums):
     Result: Ben has the most wins
     """
     scores = {"Maria": 0, "Ben": 0}
-    for num in nums:
-        primes = sorted(
-            [i for i in range(2, num + 1) if is_prime(i)], reverse=True
-        )
-        turn = "Maria"
-        while primes:
-            for prime in primes:
-                primes = [i for i in primes if i % prime != 0]
-                if not primes:
-                    scores[turn] += 1
-                turn = "Ben" if turn == "Maria" else "Maria"
-    return max(
-        scores,
-        key=scores.get
-    ) if scores["Maria"] != scores["Ben"] else None
+    for game_round in range(x):
+        num_list = list(range(1, nums[game_round] + 1))
+        turn = 0
+        while num_list:
+            num_list = sorted(
+                [num for num in num_list if check_prime(num)], reverse=True
+            )
+            if num_list:
+                num_list = remove_multiples(num_list[0], num_list)
+                turn += 1
+        scores["Maria" if turn % 2 != 0 else "Ben"] += 1
+    if scores["Maria"] > scores["Ben"]:
+        return "Maria"
+    elif scores["Maria"] < scores["Ben"]:
+        return "Ben"
+    else:
+        return None
